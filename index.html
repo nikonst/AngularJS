@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AngularJS</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style>
+h1 {padding:5%;background-color:#E0FFFF;color:green;}
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+</style>
+<head>
+
+<body ng-app="myApp" ng-controller="customersCtrl">
+<div class="container">
+<h1>We Have Customers</h1>
+</div>
+
+<div class="container" style="clear: both;padding-top:1%">
+<p class="alignleft"><span style="color:gray;font-size:1.2em;">Search</span> <input type="text" ng-model="searchtext"></p>
+<p class="alignright"><button type="button" class="btn btn-default" onclick="window.open('customers.php');">The Data</button></p>
+<br>
+</div>
+
+<div class="container">
+<hr>
+<table class="table">
+<thead>
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Company</th>
+<th>Address</th>
+<th>City</th>
+<th>County</th>
+<th>Phone</th>
+<th>Email</th>
+</tr>
+<thead>
+  <tr ng-repeat="x in myData | filter:searchtext">
+    <td>{{ x.first_name }}</td>
+	<td>{{ x.last_name }}</td>
+	<td>{{ x.company_name }}</td>
+	<td>{{ x.address }}</td>
+	<td>{{ x.city }}</td>
+	<td>{{ x.county }}</td>
+	<td>{{ x.phone }}</td>
+    <td>{{ x.email }}</td>
+  </tr>
+</table>
+  
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+  $http.get("customers.php")
+  .then(function (response) {
+      $scope.myData = response.data.customers;
+    },function(response) {
+        //Second function handles error
+        $scope.content = "Something went wrong"; // I have no content to see if sth went wrong
+	});
+});
+</script>
+
+</body>
+</html>
+
